@@ -3,7 +3,7 @@ def math_operations(*args, **kwargs):
     dictionary = kwargs
     rounded = 0
     for index in range(len(numbers)):
-        current_index = index-rounded*4
+        current_index = index - rounded * 4
         if current_index == 0:
             dictionary['a'] += numbers[index]
         elif current_index == 1:

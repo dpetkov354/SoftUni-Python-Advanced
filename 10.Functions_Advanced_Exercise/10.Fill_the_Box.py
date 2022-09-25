@@ -1,12 +1,29 @@
-def fill_the_box(height, length, width, *args, space=None):
-    args = list(args)
-    if space is None:
-        space = int(height) * int(width) * int(length)
+from collections import deque
 
-    if args[0] == "Finish":
-        return f"There is free space in the box. You could put {space} more cubes."
-    elif space - int(args[0]) <= 0:
-        args[0] -= space
-        return f"No more free space! You have {sum(map(int, args[:args.index('Finish')]))} more cubes."
 
-    return fill_the_box(height, length, width, *args[1:], space=space - int(args[0]))
+def fill_the_box(*args):
+    height = args[0]
+    length = args[1]
+    width = args[2]
+    cubes = args[3:]
+    volume = height*length*width
+    cubes_to_fill = deque([])
+    for c in cubes:
+        if c == 'Finish':
+            break
+        else:
+            cubes_to_fill.append(c)
+    while cubes_to_fill:
+        c = cubes_to_fill.popleft()
+        if volume - c >= 0:
+            volume -= c
+        else:
+            c -= volume
+            cubes_to_fill.appendleft(c)
+            return f"No more free space! You have {sum(cubes_to_fill)} more cubes."
+    return f"There is free space in the box. You could put {volume} more cubes."
+
+
+print(fill_the_box(2, 8, 2, 2, 1, 7, 3, 1, 5, "Finish"))
+print(fill_the_box(5, 5, 2, 40, 11, 7, 3, 1, 5, "Finish"))
+print(fill_the_box(10, 10, 10, 40, "Finish", 2, 15, 30))
